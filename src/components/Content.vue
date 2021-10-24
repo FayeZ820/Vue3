@@ -65,36 +65,20 @@ useInterval(() => {
         :show-header="false"
         highlight-current-row
       >
-        <el-table-column label="Coin">
+        <el-table-column label="Symbol">
           <template #default="scope">
-            <div class="table-value__label">Coin</div>
+            <div class="table-value__label">Symbol</div>
             <div class="table-value__val">
-              {{ scope.row.coin }}
+              {{ scope.row.s }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="Name">
+        <el-table-column label="Price" align="right">
           <template #default="scope">
-            <div class="table-value__label">Name</div>
-            <div class="table-value__val">
-              {{ scope.row.name }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column prop="unit" label="Unit">
-          <template #default="scope">
-            <div class="table-value__label">Unit</div>
-            <div class="table-value__val">
-              {{ scope.row.unit }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="Value" align="right">
-          <template #default="scope">
-            <div class="table-value__label">Value</div>
+            <div class="table-value__label">Price</div>
             <div class="table-value__val">
               <span :class="`value-theme value-theme--${theme}`">
-                {{ scope.row.value }}
+                {{ scope.row.c }}
               </span>
             </div>
           </template>
