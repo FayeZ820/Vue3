@@ -8,7 +8,6 @@ import { queryRateList } from "@/services/exchange";
 import { uniq } from "@/utils/helpers";
 import { useInterval } from "@/utils/use";
 
-
 const dataList = ref([]);
 const pageLoading = ref(false);
 const typeList = computed(() => {
@@ -36,13 +35,22 @@ const refreshRateList = () => {
     pageLoading.value = true;
   }
 
+
   queryRateList()
     .then((response) => {
       pageLoading.value = false;
 
-      dataList.value = response.response;
-      console.log(dataList.value[0]);
+      //dataList.value = response.response;
+      //console.log(dataList.value[0]);
 
+      const data = response.response.map((item) => {
+        const value = item;
+        return Object.assign(value, {
+          c: parseFloat(value.c || "0").toFixed(2),
+        });
+      });
+      dataList.value = data;
+      console.log(dataList.value[0]);
     })
     .catch((err) => {
       pageLoading.value = false;
