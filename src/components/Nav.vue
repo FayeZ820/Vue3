@@ -17,6 +17,11 @@ const emit = defineEmits(["update:model-value"]);
 const handleChange = (value) => {
   emit("update:model-value", value);
 };
+
+function searchInfo() {
+  console.log("kkk");
+}
+
 </script>
 
 <template>
@@ -24,6 +29,16 @@ const handleChange = (value) => {
     <div class="navbar">
       <div class="header">
         <img class="header__logo" src="../img/main-logo.png" />
+      </div>
+      <!--div style="color: white; text-align:right;">Search: <input type="text" class="form-control" v-model="keywords"/>
+        <div class="search-button-box" @click="searchInfo()"><a class="search-button"><img
+                    src="../img/search.png"></a>
+        </div>
+      </div-->
+      <div class="search-input"><input id="search-input-box" autocomplete="off">
+        <div class="search-button-box" @click="searchInfo()"><a class="search-button"><img
+                    src="../img/search.png"></a>
+        </div>
       </div>
       <div class="tab">
         <el-tabs
@@ -38,7 +53,7 @@ const handleChange = (value) => {
             :name="item"
           ></el-tab-pane>
         </el-tabs>
-      </div>
+      </div> 
     </div>
   </el-affix>
 </template>
@@ -53,4 +68,21 @@ const handleChange = (value) => {
 .header__logo {
   width: 180px;
 }
+
+.search-input{
+  height: 32px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.search-button img {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    margin-top: 7px;
+    margin-left: 7px;
+    margin-right: 7px;
+}
+
 </style>
