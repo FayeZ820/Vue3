@@ -21,11 +21,20 @@ const activeType = ref("");
 const rateList = computed(() => {
   if(activeType.value === tabSearch)
   {
+    let tmp = dataList.value[dataList.value.length - 1].s;
     return dataList.value.filter((item) =>{
       let searchReg = new RegExp(key, "gi");
       if(searchReg.test(item.s) || searchReg.test(item.c)){
+        if(tmp === item.s)
+        {
+          pageLoading.value = false;
+        }
         return true;
       }else{
+        if(tmp === item.s)
+        {
+          pageLoading.value = false;
+        }
         return false;        
       }
     });
@@ -82,10 +91,10 @@ onMounted(() => {
 });
 
 function searchKeywords(keys) {
+  pageLoading.value = true;
   if(tabList.indexOf(tabSearch) === -1){
     tabList.push(tabSearch);
   }
-  
   activeType.value = tabSearch;
   key = keys;
 }
