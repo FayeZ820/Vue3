@@ -1,6 +1,7 @@
 <script setup>
 import { defineProps, defineEmits } from "vue";
 import { ref } from "vue"
+import { debounce } from "lodash-es";
 
 let keywords=ref("zzzz");
 
@@ -21,10 +22,10 @@ const handleChange = (value) => {
   emit("update:model-value", value);
 };
 
-function searchInfo() {
+const searchInfo=debounce(function() {
   console.log(keywords.value);
   emit("update:getKyewords", keywords.value);
-}
+}, 500)
 
 </script>
 
