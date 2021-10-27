@@ -1,5 +1,8 @@
 <script setup>
 import { defineProps, defineEmits } from "vue";
+import { ref } from "vue"
+
+let keywords=ref("zzzz");
 
 const props = defineProps({
   items: {
@@ -12,14 +15,15 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:model-value"]);
+const emit = defineEmits(["update:model-value", "update:getKyewords" ]);
 
 const handleChange = (value) => {
   emit("update:model-value", value);
 };
 
 function searchInfo() {
-  console.log("kkk");
+  console.log(keywords.value);
+  emit("update:getKyewords", keywords.value);
 }
 
 </script>
@@ -30,12 +34,16 @@ function searchInfo() {
       <div class="header">
         <img class="header__logo" src="../img/main-logo.png" />
       </div>
+      <!--div style="color: red">
+        <br>
+        <input v-model="keywords">{{keywords}}
+      </div-->
       <!--div style="color: white; text-align:right;">Search: <input type="text" class="form-control" v-model="keywords"/>
         <div class="search-button-box" @click="searchInfo()"><a class="search-button"><img
                     src="../img/search.png"></a>
         </div>
       </div-->
-      <div class="search-input"><input id="search-input-box" autocomplete="off">
+      <div class="search-input"><input type="text" v-model="keywords" id="search-input-box" autocomplete="off"/>
         <div class="search-button-box" @click="searchInfo()"><a class="search-button"><img
                     src="../img/search.png"></a>
         </div>

@@ -9,14 +9,27 @@ import { uniq } from "@/utils/helpers";
 import { useInterval } from "@/utils/use";
 
 const dataList = ref([]);
+const tabSearch = "Search";
+let tabList = ["Exchange rates"];
+let key = "";
 const pageLoading = ref(false);
 const typeList = computed(() => {
   //return uniq(dataList.value.map((item) => item.type));
-  return ["Exchange rates"];
+  return tabList;
 });
 const activeType = ref("");
 const rateList = computed(() => {
-  //return dataList.value.filter((item) => item.type === activeType.value);
+  if(activeType.value === tabSearch)
+  {
+    return dataList.value.filter((item) =>{
+      let searchReg = new RegExp(key, "gi");
+      if(searchReg.test(item.s) || searchReg.test(item.c)){
+        return true;
+      }else{
+        return false;        
+      }
+    });
+  }
   return dataList.value;
 });
 
@@ -67,11 +80,21 @@ onMounted(() => {
   refreshRateList();
   useInterval(refreshRateList, 5000);
 });
+
+function searchKeywords(keys) {
+  if(tabList.indexOf(tabSearch) === -1){
+    tabList.push(tabSearch);
+  }
+  
+  activeType.value = tabSearch;
+  key = keys;
+}
+
 </script>
 
 <template>
   <div class="container">
-    <Nav v-model="activeType" :items="typeList" />
+    <Nav v-model="activeType" :items="typeList" @update:getKyewords="searchKeywords"/>
     <Offline />
     <Content :loading="pageLoading" :data-source="rateList" />
   </div>
