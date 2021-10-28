@@ -1,6 +1,7 @@
 <script setup>
-import { defineProps, computed, ref } from "vue";
+import { defineProps, computed, ref, defineEmits } from "vue";
 import { useWindowSize, useInterval } from "@/utils/use";
+import { debounce } from "lodash-es";
 
 const props = defineProps({
   loading: {
@@ -11,15 +12,52 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  nowTab: {
+    tab: String,
+    required: true,
+  }
 });
 
 const { width } = useWindowSize();
+
+const tabFavorite = "Favorite"
 
 const layout = computed(() => {
   return width.value > 425 ? "table" : "card";
 });
 
 const theme = ref("red");
+
+/*
+function addFavorit(item, index, event){
+  console.log(item);
+  console.log("KKKKKKK");
+  console.log(index);
+  console.log(event);
+  console.log("end");
+}
+*/
+
+const emit = defineEmits([ "update:favorite" ]);
+
+const addFavorit=debounce(function(item, index, event) {
+
+  console.log(props.nowTab);
+
+  if(props.nowTab === tabFavorite){
+    let res = window.confirm('Are you sure to delete the item from your favorite?');
+    if(res){
+      emit("update:favorite", item, "del");
+    }
+  }else{
+    let res = window.confirm('Are you sure to add the item to your favorite?');
+    if(res){
+      emit("update:favorite", item, "add");
+    }
+  }
+  
+}, 500)
+
 
 useInterval(() => {
   theme.value = theme.value === "red" ? "green" : "red";
@@ -64,6 +102,7 @@ useInterval(() => {
         border
         :show-header="false"
         highlight-current-row
+        @row-dblclick="addFavorit"
       >
         <el-table-column label="Symbol">
           <template #default="scope">

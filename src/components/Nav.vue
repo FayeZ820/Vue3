@@ -17,7 +17,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:model-value", "update:getKyewords" ]);
+const emit = defineEmits(["update:model-value", "update:getKyewords"]);
 
 const handleChange = (value) => {
   emit("update:model-value", value);

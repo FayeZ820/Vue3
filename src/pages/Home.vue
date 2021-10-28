@@ -9,9 +9,11 @@ import { uniq } from "@/utils/helpers";
 import { useInterval } from "@/utils/use";
 
 const dataList = ref([]);
-const tabSearch = "Search";
+//const tabSearch = "Search";
+const tabFavorite = "Favorite"
 let tabList = ["Exchange rates"];
 let key = "";
+let favoriteList = [];
 const pageLoading = ref(false);
 const typeList = computed(() => {
   //return uniq(dataList.value.map((item) => item.type));
@@ -19,6 +21,11 @@ const typeList = computed(() => {
 });
 const activeType = ref("");
 const rateList = computed(() => {
+  if(activeType.value === tabFavorite)
+  {
+    return favoriteList;
+  }
+
   if(key !== "")
   {
     let tmp = dataList.value[dataList.value.length - 1].s;
@@ -39,7 +46,7 @@ const rateList = computed(() => {
       }
     });
   }
-  return dataList.value;
+  return dataList.value; 
 });
 
 // Reset active when data list chagnes.
@@ -90,6 +97,31 @@ onMounted(() => {
   useInterval(refreshRateList, 5000);
 });
 
+function addFavorite(item, operate){
+
+  console.log("addFavorit");
+
+  if(operate === "del"){
+    let index = favoriteList.indexOf(item);
+    if(index !== -1)
+    {
+      favoriteList.splice(index, 1);
+    }
+    
+  }else{
+    if(tabList.indexOf(tabFavorite) === -1){
+      tabList.push(tabFavorite);
+    }
+    activeType.value = tabFavorite;
+
+    if(favoriteList.indexOf(item) === -1)
+    {
+      favoriteList.push(item);
+    }
+  }
+
+}
+
 function searchKeywords(keys) {
   pageLoading.value = true;
   /*
@@ -105,9 +137,9 @@ function searchKeywords(keys) {
 
 <template>
   <div class="container">
-    <Nav v-model="activeType" :items="typeList" @update:getKyewords="searchKeywords"/>
+    <Nav v-model="activeType" :items="typeList" @update:getKyewords="searchKeywords" @update:addFavorit="addFavorite"/>
     <Offline />
-    <Content :loading="pageLoading" :data-source="rateList" />
+    <Content :loading="pageLoading" :data-source="rateList" :nowTab="activeType" @update:favorite="addFavorite"/>
   </div>
 </template>
 
