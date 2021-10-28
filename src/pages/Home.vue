@@ -19,7 +19,7 @@ const typeList = computed(() => {
 });
 const activeType = ref("");
 const rateList = computed(() => {
-  if(activeType.value === tabSearch)
+  if(key !== "")
   {
     let tmp = dataList.value[dataList.value.length - 1].s;
     return dataList.value.filter((item) =>{
@@ -92,10 +92,12 @@ onMounted(() => {
 
 function searchKeywords(keys) {
   pageLoading.value = true;
+  /*
   if(tabList.indexOf(tabSearch) === -1){
     tabList.push(tabSearch);
   }
   activeType.value = tabSearch;
+  */
   key = keys;
 }
 

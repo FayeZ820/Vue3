@@ -1,9 +1,10 @@
 <script setup>
 import { defineProps, defineEmits } from "vue";
-import { ref } from "vue"
+import { ref, watch } from "vue"
 import { debounce } from "lodash-es";
 
-let keywords=ref("zzzz");
+
+let keywords=ref("");
 
 const props = defineProps({
   items: {
@@ -25,7 +26,12 @@ const handleChange = (value) => {
 const searchInfo=debounce(function() {
   console.log(keywords.value);
   emit("update:getKyewords", keywords.value);
-}, 500)
+}, 1000)
+
+watch(keywords, (newValue, oldValue)=>{
+  console.log('new', newValue);
+  searchInfo();
+})
 
 </script>
 
@@ -45,9 +51,9 @@ const searchInfo=debounce(function() {
         </div>
       </div-->
       <div class="search-input"><input type="text" v-model="keywords" id="search-input-box" autocomplete="off"/>
-        <div class="search-button-box" @click="searchInfo()"><a class="search-button"><img
+        <!--div class="search-button-box" @click="searchInfo()"><a class="search-button"><img
                     src="../img/search.png"></a>
-        </div>
+        </div-->
       </div>
       <div class="tab">
         <el-tabs
